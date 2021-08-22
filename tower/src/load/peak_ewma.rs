@@ -13,9 +13,15 @@ use super::completion::{CompleteOnResponse, TrackCompletion, TrackCompletionFutu
 use super::Load;
 use std::task::{Context, Poll};
 use std::{
-    sync::{Arc, Mutex},
+    sync::Arc,
     time::Duration,
 };
+
+#[cfg(not(target_env = "sgx"))]
+use std::sync::Mutex;
+#[cfg(target_env = "sgx")]
+use std::sync::SgxMutex as Mutex;
+
 use tokio::time::Instant;
 use tower_service::Service;
 use tracing::trace;

@@ -4,7 +4,13 @@ use super::{
 };
 use futures_core::ready;
 use pin_project::pin_project;
-use std::sync::{Arc, Mutex, Weak};
+use std::sync::{Arc, Weak};
+
+#[cfg(not(target_env = "sgx"))]
+use std::sync::Mutex;
+#[cfg(target_env = "sgx")]
+use std::sync::SgxMutex as Mutex;
+
 use std::{
     future::Future,
     pin::Pin,
